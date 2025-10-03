@@ -403,6 +403,13 @@
                     "nome": "Immissione in Rete Gas",
                     "tipo": "foglia",
                     "figli": []
+                  },
+                  {
+                    "id": "val_util_energia_power_to_gas",
+                    "nome": "Power-to-Gas (Produzione Metano)",
+                    "tipo": "foglia", 
+                    "figli": [],
+                    "descrizione": "Processi di metanazione dove H2 reagisce con CO2 per produrre metano sintetico"
                   }
                 ]
               }
