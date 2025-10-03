@@ -1,0 +1,13 @@
+Per visualizzare l'albero dal json 
+- nella directory del progetto (terminale) eseguire python3 -m http.server (i dati devono
+essere visualizzati passando da un http server)
+- nel browser accedere a http://localhost:8000/home.html
+- la tassonomia è in tassonomia2.json
+
+Non funziona se si apre home.html direttamente con il browser per un problema di CORS, 
+dato che da js si accede al file contenente la tassonomia.
+
+CORS
+Quando il tuo codice JavaScript tenta di accedere a un file o a una risorsa che si trova 
+su un dominio, protocollo o porta diverso da quello della pagina web che lo sta eseguendo, 
+il browser applica la politica di sicurezza del CORS (Cross-Origin Resource Sharing).

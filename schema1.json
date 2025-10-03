@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tassonomia Decarbonizzazione Porti",
+  "description": "Struttura gerarchica per la categorizzazione degli asset di decarbonizzazione",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID univoco del nodo tassonomico"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome della categoria"
+    },
+    "descrizione": {
+      "type": "string",
+      "description": "Descrizione della categoria"
+    },
+    "tipo": {
+      "type": "string",
+      "enum": ["dimensione", "categoria", "sottocategoria", "foglia"],
+      "description": "Tipo di nodo nella gerarchia"
+    },
+    "figli": {
+      "type": "array",
+      "items": {
+        "$ref": "#"
+      },
+      "description": "Nodi figli (struttura ricorsiva)"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "versione": {"type": "string"},
+        "data_creazione": {"type": "string", "format": "date"},
+        "stato": {"type": "string", "enum": ["attivo", "deprecato", "bozza"]}
+      }
+    }
+  },
+  "required": ["id", "nome", "tipo"]
+}

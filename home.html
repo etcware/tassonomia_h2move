@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 3px;
+  cursor: pointer;
+}
+
+.node text {
+  font: 12px sans-serif;
+  cursor: pointer;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 5px;
+  pointer-events: none;
+  font-size: 12px;
+  max-width: 300px;
+  z-index: 1000;
+}
+
+.details-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.details-panel h3 {
+  margin-top: 0;
+  color: steelblue;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.details-panel .property {
+  margin: 8px 0;
+}
+
+.details-panel .property label {
+  font-weight: bold;
+  color: #666;
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.details-panel .property .value {
+  margin-left: 0;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.metadata-section {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 10px 0;
+}
+
+.geojson-section {
+  background: #fff3cd;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 10px 0;
+  border-left: 4px solid #ffc107;
+}
+
+.collapse-btn {
+  background: steelblue;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 5px 2px;
+  font-size: 11px;
+}
+
+.controls {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #666;
+}
+</style>
+<body>
+<div class="controls">
+  <button class="collapse-btn" onclick="collapseAll()">Collassa Tutto</button>
+  <button class="collapse-btn" onclick="expandAll()">Espandi Tutto</button>
+</div>
+<div id="tree" style="padding-left:50px">
+  <div class="loading">Caricamento dati in corso...</div>
+</div>
+<div id="details" class="details-panel" style="display: none;">
+  <h3>Dettagli Nodo</h3>
+  <div id="details-content"></div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+
+// Variabili globali per le funzioni di controllo
+let currentRoot;
+let updateFunction;
+
+// Carica il file JSON esterno
+d3.json("tassonomia_h2move.json").then(function(data) {
+  if (!data) {
+    console.error("Impossibile caricare il file JSON");
+    d3.select("#tree").html("<p style='color: red;'>Errore: Impossibile caricare il file JSON</p>");
+    return;
+  }
+  
+  // Rimuove il messaggio di caricamento
+  d3.select("#tree .loading").remove();
+  
+  // PARAMETRI DIMENSIONE
+  const svgWidth = 1600;
+  const svgHeight = 1000;
+  const margin = { top: 60, right: 400, bottom: 60, left: 160 };
+  
+  const root = d3.hierarchy(data.tassonomia, d => d.figli);
+  
+  // LAYOUT TREE
+  const treeLayout = d3.tree()
+      .size([svgHeight - margin.top - margin.bottom, 
+             svgWidth - margin.left - margin.right])
+      .separation((a, b) => {
+          return a.parent == b.parent ? 1.5 : 2.5;
+      });
+  
+  // Variabile globale per tenere traccia del nodo root
+  currentRoot = root;
+  
+  // SVG
+  const svg = d3.select("#tree").append("svg")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight)
+    .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Funzione per mostrare i dettagli del nodo
+  function showNodeDetails(d) {
+    const detailsPanel = d3.select("#details");
+    const content = d3.select("#details-content");
+    
+    content.html(`
+      <div class="property">
+        <label>ID</label>
+        <div class="value">${d.data.id}</div>
+      </div>
+      <div class="property">
+        <label>Nome</label>
+        <div class="value">${d.data.nome}</div>
+      </div>
+      ${d.data.descrizione ? `
+      <div class="property">
+        <label>Descrizione</label>
+        <div class="value">${d.data.descrizione}</div>
+      </div>` : ''}
+      <div class="property">
+        <label>Tipo</label>
+        <div class="value">${d.data.tipo}</div>
+      </div>
+      <div class="property">
+        <label>Livello</label>
+        <div class="value">${d.depth}</div>
+      </div>
+      ${d.data.metadata ? `
+      <div class="metadata-section">
+        <strong>Metadata:</strong>
+        ${Object.entries(d.data.metadata).map(([key, value]) => `
+          <div class="property">
+            <label>${key}</label>
+            <div class="value">${value}</div>
+          </div>
+        `).join('')}
+      </div>` : ''}
+      ${d.data.geoJson ? `
+      <div class="geojson-section">
+        <strong>GeoJSON:</strong>
+        <div class="property">
+          <label>Tipo</label>
+          <div class="value">${d.data.geoJson.type}</div>
+        </div>
+        <div class="property">
+          <label>Numero Features</label>
+          <div class="value">${d.data.geoJson.features.length}</div>
+        </div>
+        ${d.data.geoJson.features.map((feature, i) => `
+          <div style="margin-top: 10px; padding: 5px; background: #fff; border-radius: 3px;">
+            <strong>Feature ${i + 1}:</strong>
+            <div class="property">
+              <label>Nome</label>
+              <div class="value">${feature.properties.nome}</div>
+            </div>
+            <div class="property">
+              <label>Coordinate</label>
+              <div class="value">${feature.geometry.coordinates.join(', ')}</div>
+            </div>
+            <div class="property">
+              <label>Stato</label>
+              <div class="value">${feature.properties.stato_avanzamento}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>` : ''}
+    `);
+    
+    detailsPanel.style("display", "block");
+  }
+
+  // Funzione per aggiornare la visualizzazione
+  function update(source) {
+    const duration = 250;
+    
+    // Calcola il nuovo layout tree
+    treeLayout(currentRoot);
+
+    // Ottieni i nodi e i link
+    const nodes = currentRoot.descendants();
+    const links = currentRoot.links();
+
+    // Normalizza le posizioni per la transizione
+    nodes.forEach(d => {
+      d.y = d.depth * 200;
+    });
+
+    // UPDATE: Collegamenti
+    const link = svg.selectAll(".link")
+      .data(links, d => d.target.id);
+
+    // ENTER: Nuovi collegamenti
+    const linkEnter = link.enter().append("path")
+      .attr("class", "link")
+      .attr("d", d3.linkHorizontal()
+        .x(d => d.y)
+        .y(d => d.x))
+      .style("fill", "none")
+      .style("stroke", "#ccc")
+      .style("stroke-width", "2px")
+      .style("opacity", 0);
+
+    // UPDATE + ENTER
+    const linkUpdate = linkEnter.merge(link)
+      .transition()
+      .duration(duration)
+      .style("opacity", 1)
+      .attr("d", d3.linkHorizontal()
+        .x(d => d.y)
+        .y(d => d.x));
+
+    // EXIT: Collegamenti rimossi
+    link.exit()
+      .transition()
+      .duration(duration)
+      .style("opacity", 0)
+      .remove();
+
+    let i = 0;
+
+    // UPDATE: Nodi
+    const node = svg.selectAll(".node")
+      .data(nodes, d => d.id || (d.id = ++i));
+
+    // ENTER: Nuovi nodi
+    const nodeEnter = node.enter().append("g")
+      .attr("class", "node")
+      .attr("transform", d => `translate(${source.y0},${source.x0})`)
+      .style("opacity", 0)
+      .on("click", click)
+      .on("mouseover", function(event, d) {
+        showNodeDetails(d);
+      });
+
+    // Cerchio per i nodi
+    nodeEnter.append("circle")
+      .attr("r", 4)
+      .style("fill", d => d._children ? "lightsteelblue" : "#fff")
+      .style("stroke", d => {
+        // Colori diversi per diversi tipi di nodi
+        switch(d.data.tipo) {
+          case 'dimensione': return '#e41a1c';
+          case 'categoria': return '#377eb8';
+          case 'sottocategoria': return '#4daf4a';
+          case 'foglia': return '#984ea3';
+          default: return 'steelblue';
+        }
+      })
+      .style("stroke-width", "3px");
+
+    // Testo per i nodi
+    nodeEnter.append("text")
+      .attr("dy", "0.31em")
+      .attr("x", d => d.children || d._children ? -12 : 12)
+      .style("text-anchor", d => d.children || d._children ? "end" : "start")
+      .style("font", "11px sans-serif")
+      .style("fill", "#333")
+      .style("font-weight", d => d.depth === 0 ? "bold" : "normal")
+      .text(d => d.data.nome);
+
+    // UPDATE + ENTER
+    const nodeUpdate = nodeEnter.merge(node)
+      .transition()
+      .duration(duration)
+      .style("opacity", 1)
+      .attr("transform", d => `translate(${d.y},${d.x})`);
+
+    // EXIT: Nodi rimossi
+    const nodeExit = node.exit()
+      .transition()
+      .duration(duration)
+      .style("opacity", 0)
+      .attr("transform", d => `translate(${source.y},${source.x})`)
+      .remove();
+
+    // Aggiorna le proprietà del cerchio
+    nodeUpdate.select("circle")
+      .attr("r", 4)
+      .style("fill", d => d._children ? "lightsteelblue" : "#fff")
+      .style("stroke", d => {
+        switch(d.data.tipo) {
+          case 'dimensione': return '#e41a1c';
+          case 'categoria': return '#377eb8';
+          case 'sottocategoria': return '#4daf4a';
+          case 'foglia': return '#984ea3';
+          default: return 'steelblue';
+        }
+      });
+
+    // Aggiorna le proprietà del testo
+    nodeUpdate.select("text")
+      .attr("x", d => d.children || d._children ? -12 : 12)
+      .style("text-anchor", d => d.children || d._children ? "end" : "start")
+      .style("font-weight", d => d.depth === 0 ? "bold" : "normal");
+
+    // Memorizza le posizioni vecchie per le transizioni
+    nodes.forEach(d => {
+      d.x0 = d.x;
+      d.y0 = d.y;
+    });
+  }
+
+  // Funzione per gestire il click sui nodi
+  function click(event, d) {
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+    update(d);
+  }
+
+  // Salva la funzione update globalmente
+  updateFunction = update;
+
+  // Inizializza le proprietà per le transizioni
+  root.x0 = (svgHeight - margin.top - margin.bottom) / 2;
+  root.y0 = 0;
+  
+  // Espandi i primi due livelli all'inizio
+  root.descendants().forEach(d => {
+    d._children = d.children;
+    if (d.depth < 2) {
+      d.children = d._children;
+      d._children = null;
+    }
+  });
+
+  // Disegna l'albero iniziale
+  update(root);
+}).catch(function(error) {
+  console.error("Errore nel caricamento del JSON:", error);
+  d3.select("#tree").html("<p style='color: red; padding: 20px;'>Errore nel caricamento del file JSON: " + error + "</p>");
+});
+
+// Funzioni globali per controlli
+function collapseAll() {
+  if (currentRoot) {
+    currentRoot.descendants().forEach(d => {
+      if (d.depth > 0) {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        }
+      }
+    });
+    if (updateFunction) {
+      updateFunction(currentRoot);
+    }
+  }
+}
+
+function expandAll() {
+  if (currentRoot) {
+    currentRoot.descendants().forEach(d => {
+      if (d._children) {
+        d.children = d._children;
+        d._children = null;
+      }
+    });
+    if (updateFunction) {
+      updateFunction(currentRoot);
+    }
+  }
+}
+
+</script>

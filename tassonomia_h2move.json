@@ -1,0 +1,671 @@
+{
+  "tassonomia": {
+    "id": "root",
+    "nome": "Masterplan Decarbonizzazione Porti",
+    "descrizione": "Tassonomia completa per la categorizzazione degli asset di decarbonizzazione nei porti italo-francesi",
+    "tipo": "dimensione",
+    "metadata": {
+      "versione": "1.0",
+      "data_creazione": "29/09/2025",
+      "stato": "attivo"
+    },
+    "figli": [
+      {
+        "id": "geo",
+        "nome": "Zona Geografica",
+        "descrizione": "Categorizzazione per identificare cluster esistenti, corridoi potenziali e politiche specifiche",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "geo_eu",
+            "nome": "Europa",
+            "tipo": "foglia",
+            "figli": [
+              {
+                "id": "geo_it",
+                "nome": "Italia",
+                "tipo": "categoria",
+                "figli": [
+                  {
+                    "id": "geo_it_to",
+                    "nome": "Regione Toscana",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "geo_it_li",
+                    "nome": "Regione Liguria",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "geo_it_sa",
+                    "nome": "Regione Sardegna",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "geo_fr",
+                "nome": "Francia",
+                "tipo": "categoria",
+                "figli": [
+                  {
+                    "id": "geo_fr_co",
+                    "nome": "Regione Corsica",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "valore",
+        "nome": "Fase Catena del Valore",
+        "descrizione": "Suddivisione per analizzare la maturità e completezza della filiera",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "val_prod",
+            "nome": "Produzione",
+            "tipo": "categoria",
+            "figli": [
+              {
+                "id": "val_prod_tech",
+                "nome": "Tecnologia di Produzione",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_prod_tech_elec_pem",
+                    "nome": "Elettrolisi PEM",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_tech_elec_alk",
+                    "nome": "Elettrolisi Alcalina",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_tech_smr",
+                    "nome": "Steam Methane Reforming (SMR)",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_tech_smr_ccs",
+                    "nome": "SMR con CCS",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_tech_bio",
+                    "nome": "Gassificazione di biomasse",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_prod_qual",
+                "nome": "Qualità Idrogeno",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_prod_qual_verde",
+                    "nome": "Idrogeno Verde",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_qual_lowcarbon",
+                    "nome": "Idrogeno Low-Carbon",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_qual_grigio",
+                    "nome": "Idrogeno Grigio",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_prod_feed",
+                "nome": "Approvvigionamento Feedstock",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_prod_feed_rete",
+                    "nome": "Elettricità da rete",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_feed_fv",
+                    "nome": "Elettricità da fotovoltaico",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_feed_eolico",
+                    "nome": "Elettricità da eolico offshore",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_feed_gas",
+                    "nome": "Gas naturale",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_feed_biometano",
+                    "nome": "Biometano",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_prod_purif",
+                "nome": "Purificazione e Condizionamento",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_prod_purif_umidita",
+                    "nome": "Rimozione umidità",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_prod_purif_filtraggio",
+                    "nome": "Filtraggio impurità",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "val_stoc",
+            "nome": "Stoccaggio",
+            "tipo": "categoria",
+            "figli": [
+              {
+                "id": "val_stoc_tech",
+                "nome": "Tecnologia Stoccaggio",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_stoc_tech_gassoso",
+                    "nome": "Stoccaggio Gassoso",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_stoc_tech_criogenico",
+                    "nome": "Stoccaggio Criogenico",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_stoc_tech_idruri",
+                    "nome": "Idruri Metallici",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_stoc_tech_sotterraneo",
+                    "nome": "Stoccaggio Sotterraneo",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_stoc_durata",
+                "nome": "Durata/Temporalità",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_stoc_durata_buffer",
+                    "nome": "Stoccaggio di Piccola Scala/Buffer",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_stoc_durata_stagionale",
+                    "nome": "Stoccaggio Stagionale",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "val_dist",
+            "nome": "Distribuzione e Trasporto",
+            "tipo": "categoria",
+            "figli": [
+              {
+                "id": "val_dist_primario",
+                "nome": "Trasporto Primario",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_dist_primario_reti",
+                    "nome": "Reti Dedicate H2",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_dist_primario_gasdotti",
+                    "nome": "Repurposing Gasdotti",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_dist_primario_gomma",
+                    "nome": "Trasporto su Gomma",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_dist_primario_mare",
+                    "nome": "Trasporto via Mare",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_dist_secondaria",
+                "nome": "Distribuzione Secondaria",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_dist_secondaria_stazioni",
+                    "nome": "Stazioni di rifornimento",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_dist_secondaria_condotte",
+                    "nome": "Piccole condotte locali",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "val_util",
+            "nome": "Utilizzo Finale",
+            "tipo": "categoria",
+            "figli": [
+              {
+                "id": "val_util_mobilita",
+                "nome": "Mobilità",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_util_mobilita_pesante",
+                    "nome": "Mobilità Pesante",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_mobilita_marittima",
+                    "nome": "Trasporto Marittimo",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_mobilita_ferroviaria",
+                    "nome": "Trasporto Ferroviario",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_mobilita_portuale",
+                    "nome": "Logistica Portuale",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_util_industria",
+                "nome": "Industria",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_util_industria_raffinerie",
+                    "nome": "Raffinerie",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_industria_fertilizzanti",
+                    "nome": "Fertilizzanti",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_industria_acciaio",
+                    "nome": "Acciaio",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_industria_vetro",
+                    "nome": "Vetro",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_industria_ceramica",
+                    "nome": "Ceramica",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              },
+              {
+                "id": "val_util_energia",
+                "nome": "Generazione di Energia e Calore",
+                "tipo": "sottocategoria",
+                "figli": [
+                  {
+                    "id": "val_util_energia_cogenerazione",
+                    "nome": "Cogenerazione",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_energia_power",
+                    "nome": "Power-to-Power",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "val_util_energia_blending",
+                    "nome": "Immissione in Rete Gas",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "val_trasv",
+            "nome": "Fasi trasversali",
+            "tipo": "categoria",
+            "figli": [
+                  {
+                    "id": "trasv_prog_aut",
+                    "nome": "Progettazione & autorizzazioni",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "trasv_ric_svil",
+                    "nome": "Ricerca & sviluppo",
+                    "tipo": "foglia",
+                    "figli": []
+                  },
+                  {
+                    "id": "trasv_form_comp",
+                    "nome": "Formazione & competenze",
+                    "tipo": "foglia",
+                    "figli": []
+                  }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "datazione",
+        "nome": "Datazione",
+        "descrizione": "Datazione degli eventi significativi",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "data_annuncio",
+            "nome": "Data Annuncio",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "data_start",
+            "nome": "Data Inizio Lavori",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "data_operativ",
+            "nome": "Data Entrata in Operatività",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "data_bando",
+            "nome": "Data di Riferimento del Bando",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "data_vigenza_start",
+            "nome": "Data Inizio Vigenza Normativa",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "data_vigenza_end",
+            "nome": "Data Fine Vigenza Normativa",
+            "tipo": "foglia",
+            "figli": []
+          }
+        ]
+      },
+      {
+        "id": "soggetti",
+        "nome": "Soggetti Attivi",
+        "descrizione": "Identificazione degli attori che guidano la transizione",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "sog_az",
+            "nome": "Azienda",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "sog_aut",
+            "nome": "Autorità Portuale",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "sog_reg",
+            "nome": "Regione",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "sog_prov",
+            "nome": "Provincia",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "sog_com",
+            "nome": "Comune",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "sog_ric",
+            "nome": "Ente di Ricerca",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "sog_uni",
+            "nome": "Università",
+            "tipo": "foglia",
+            "figli": []
+          }
+        ]
+      },
+      {
+        "id": "contesto",
+        "nome": "Contesto",
+        "descrizione": "Quadro normativo e finanziario per replicabilità e scaling",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "cont_ricerca",
+            "nome": "Progetto di Ricerca",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "cont_band_reg",
+            "nome": "Bando Regionale",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "cont_band_naz",
+            "nome": "Bando Nazionale",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "cont_band_eur",
+            "nome": "Bando Europeo",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "cont_inv_pub",
+            "nome": "Investimento Pubblico",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "cont_inv_priv",
+            "nome": "Investimento Privato",
+            "tipo": "foglia",
+            "figli": []
+          }
+        ]
+      },
+      {
+        "id": "oggetti",
+        "nome": "Oggetti",
+        "descrizione": "Focus tecnologico e industriale dei territori",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "ogg_prog",
+            "nome": "Progetto",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "ogg_prod",
+            "nome": "Prodotto",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "ogg_tech",
+            "nome": "Tecnologia",
+            "tipo": "foglia",
+            "figli": []
+          },
+          {
+            "id": "ogg_norm",
+            "nome": "Normativa",
+            "tipo": "foglia",
+            "figli": []
+          }
+        ]
+      },
+      {
+        "id": "geolocalizzazione",
+        "nome": "Geolocalizzazione Asset",
+        "descrizione": "Posizione geografica precisa degli asset del progetto in formato GeoJSON",
+        "tipo": "dimensione",
+        "figli": [
+          {
+            "id": "geo_schema",
+            "nome": "Schema GeoJSON",
+            "tipo": "foglia",
+            "descrizione": "Definizione dello standard per la mappatura geografica",
+            "geoJson": {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "id": "asset_porto_genova",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [8.9375, 44.4056]
+                  },
+                  "properties": {
+                    "nome": "Terminale Idrogeno - Porto di Genova",
+                    "indirizzo": "Calata Chiappella, 16128 Genova GE",
+                    "comune": "Genova",
+                    "provincia": "GE",
+                    "regione": "Liguria",
+                    "stato": "Italia",
+                    "id_tassonomia": ["val_prod_tech_elec_pem", "val_dist_secondaria_stazioni"],
+                    "soggetti_attivi": ["sog_aut", "sog_az"],
+                    "tipologia_oggetto": "progetto",
+                    "stato_avanzamento": "in_progettazione",
+                    "data_inizio_prevista": "2025-03-01"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "id": "impianto_livorno",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [10.3963, 43.7228]
+                  },
+                  "properties": {
+                    "nome": "Impianto di Produzione H2 - Livorno",
+                    "indirizzo": "Via del Molo, 57123 Livorno LI",
+                    "comune": "Livorno",
+                    "provincia": "LI",
+                    "regione": "Toscana",
+                    "stato": "Italia",
+                    "id_tassonomia": ["val_prod_tech_elec_alk"],
+                    "soggetti_attivi": ["sog_uni", "sog_ric"],
+                    "tipologia_oggetto": "impianto",
+                    "stato_avanzamento": "operativo",
+                    "data_entrata_operativita": "2024-06-15"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

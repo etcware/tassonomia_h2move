@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Geolocalizzazione Asset",
+  "description": "Schema GeoJSON per la mappatura geografica degli asset",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["FeatureCollection"],
+      "description": "Tipo GeoJSON"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["Feature"],
+            "description": "Tipo feature GeoJSON"
+          },
+          "id": {
+            "type": "string",
+            "description": "ID univoco dell'asset"
+          },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Point"],
+                "description": "Tipo geometria"
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {"type": "number"},
+                "minItems": 2,
+                "maxItems": 2,
+                "description": "Coordinate [longitudine, latitudine]"
+              }
+            },
+            "required": ["type", "coordinates"]
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "nome": {"type": "string"},
+              "indirizzo": {"type": "string"},
+              "comune": {"type": "string"},
+              "provincia": {"type": "string"},
+              "regione": {"type": "string"},
+              "stato": {"type": "string"},
+              "id_tassonomia": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Riferimenti alla tassonomia principale"
+              },
+              "soggetti_attivi": {
+                "type": "array", 
+                "items": {"type": "string"},
+                "description": "Riferimenti ai soggetti attivi"
+              },
+              "tipologia_oggetto": {"type": "string"},
+              "stato_avanzamento": {"type": "string"},
+              "data_inizio_prevista": {"type": "string", "format": "date"},
+              "data_entrata_operativita": {"type": "string", "format": "date"}
+            },
+            "required": ["nome", "id_tassonomia"]
+          }
+        },
+        "required": ["type", "geometry", "properties"]
+      }
+    }
+  },
+  "required": ["type", "features"]
+}
